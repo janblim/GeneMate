@@ -1,6 +1,6 @@
-# BookUp
+# GeneMate
 
-This is a prototype for my social-media website BookUp. BookUp is a website for users to make friends over their favorite books, like a virtual book-club. Users can discuss books, compile a list of favorite books, make friends, and vote on comments they like or dislike. You can create a new page about your favorite book, or you can simply start a discussion on an existing book.
+GeneMate is a revolutionary dating platform that helps individuals find their perfect match based on their genetic compatibility. We use cutting-edge technology to analyze genetic data, allowing users to not only discover potential romantic connections but also gain insights into possible genetic incompatibilities.
 
 [Live Link](https://bookup-nhq9.onrender.com/)
 
