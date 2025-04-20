@@ -62,5 +62,3 @@ GeneMate is a revolutionary dating platform that helps individuals find their pe
    command to include the `--watch` flag. This flag will rebuild the __dist__
    folder whenever you change your code, keeping the production version up to
    date.
-
-

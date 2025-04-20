@@ -11,6 +11,11 @@ export default defineConfig((mode) => ({
       failOnError: mode === "production",
     }),
   ],
+  resolve: {
+    alias: {
+      "@": "/src",
+    },
+  },
   server: {
     open: true,
     proxy: {

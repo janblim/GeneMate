@@ -2,7 +2,7 @@ import { createBrowserRouter } from 'react-router-dom';
 import LoginFormPage from '../components/LoginFormPage';
 import SignupFormPage from '../components/SignupFormPage';
 import Layout from './Layout';
-import MainPage from '../components/MainPage';
+import SplashPage from '../pages/SplashPage';
 import BookPage from '../components/BookPage';
 import SortedPage from '../components/SortedPage';
 import FavoritePage from '../components/FavoritePage';
@@ -12,13 +12,16 @@ import ProfilePage from '../components/ProfilePage';
 import PostPage from '../components/PostPage';
 
 export const router = createBrowserRouter([
+  // Splash page — no Layout
+  {
+    path: "/",
+    element: <SplashPage />,
+  },
+
+  // All other pages — wrapped in Layout (with sidebar)
   {
     element: <Layout />,
     children: [
-      {
-        path: "/",
-        element: <MainPage />,
-      },
       {
         path: "login",
         element: <LoginFormPage />,
@@ -55,7 +58,6 @@ export const router = createBrowserRouter([
         path: 'post/:post_id',
         element: <PostPage />
       }
-
     ],
   },
 ]);
