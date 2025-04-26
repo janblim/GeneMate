@@ -11,6 +11,7 @@ GeneMate is a revolutionary dating platform that helps individuals find their pe
 * Redux
 * SQL Alchemy
 * Redux
+* Tailwind CSS
 * AWS
 
 ## Getting started
