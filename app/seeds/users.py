@@ -1,6 +1,6 @@
 from app.models import db, User, GeneticData
 from werkzeug.security import generate_password_hash
-from datetime import datetime
+from datetime import datetime, timezone
 
 # Helper to load SNP file text
 def load_snp_file(filepath):
@@ -16,7 +16,6 @@ def seed_users():
     sample_dna5 = load_snp_file('app/seeds/sample_files/sample_dna5.txt')
     sample_dna6 = load_snp_file('app/seeds/sample_files/sample_dna6.txt')
 
-    # Create users
     user1 = User(
         username='demo_user',
         email='demo@genemate.com',
@@ -25,8 +24,8 @@ def seed_users():
         last_name='User',
         picture=None,
         hashed_password=generate_password_hash('password'),
-        created_at=datetime.utcnow(),
-        updated_at=datetime.utcnow()
+        created_at=datetime.now(timezone.utc),
+        updated_at=datetime.now(timezone.utc)
     )
 
     user2 = User(
@@ -37,8 +36,8 @@ def seed_users():
         last_name='Doe',
         picture=None,
         hashed_password=generate_password_hash('password123'),
-        created_at=datetime.utcnow(),
-        updated_at=datetime.utcnow()
+        created_at=datetime.now(timezone.utc),
+        updated_at=datetime.now(timezone.utc)
     )
 
     user3 = User(
@@ -49,8 +48,8 @@ def seed_users():
         last_name='Smith',
         picture=None,
         hashed_password=generate_password_hash('securepassword'),
-        created_at=datetime.utcnow(),
-        updated_at=datetime.utcnow()
+        created_at=datetime.now(timezone.utc),
+        updated_at=datetime.now(timezone.utc)
     )
 
     user4 = User(
@@ -61,8 +60,8 @@ def seed_users():
         last_name='Watson',
         picture=None,
         hashed_password=generate_password_hash('mypassword'),
-        created_at=datetime.utcnow(),
-        updated_at=datetime.utcnow()
+        created_at=datetime.now(timezone.utc),
+        updated_at=datetime.now(timezone.utc)
     )
 
     user5 = User(
@@ -73,8 +72,8 @@ def seed_users():
         last_name='Brown',
         picture=None,
         hashed_password=generate_password_hash('password321'),
-        created_at=datetime.utcnow(),
-        updated_at=datetime.utcnow()
+        created_at=datetime.now(timezone.utc),
+        updated_at=datetime.now(timezone.utc)
     )
 
     user6 = User(
@@ -85,8 +84,8 @@ def seed_users():
         last_name='Green',
         picture=None,
         hashed_password=generate_password_hash('password987'),
-        created_at=datetime.utcnow(),
-        updated_at=datetime.utcnow()
+        created_at=datetime.now(timezone.utc),
+        updated_at=datetime.now(timezone.utc)
     )
 
     # Add users to session
