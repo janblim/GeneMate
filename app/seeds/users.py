@@ -1,104 +1,129 @@
-from app.models import db, User, environment, SCHEMA
-from sqlalchemy.sql import text
+from app.models import db, User, GeneticData
+from werkzeug.security import generate_password_hash
+from datetime import datetime
 
+# Helper to load SNP file text
+def load_snp_file(filepath):
+    with open(filepath, 'r') as file:
+        return file.read()
 
-# Adds a demo user, you can add other users here if you want
 def seed_users():
-    demo = User(
-        username='Demo', email='demo@aa.io', password='password', first_name='Demo', last_name='Lition', address='California, USA', picture='https://bookup-project.s3.us-east-2.amazonaws.com/Demo.jpg')
-    marnie = User(
-        username='marnie', email='marnie@aa.io', password='password', first_name='Marnie', last_name='McBride', address='Ohio, USA', picture='https://bookup-project.s3.us-east-2.amazonaws.com/marnie.jpg')
-    bobbie = User(
-        username='bobbie', email='bobbie@aa.io', password='password', first_name='Bobbie', last_name='Turner', address='Minnesota, USA', picture='https://bookup-project.s3.us-east-2.amazonaws.com/bobbiet.jpg')
-    paul = User(
-        username='SpicyWormer65', email='paul@aa.io', password='password', first_name='Paul', last_name='Atredies', address='Caladaan', picture='https://bookup-project.s3.us-east-2.amazonaws.com/paul.jpg')
-    leto = User(
-        username='WormEmperor81', email='leto@aa.io', password='password', first_name='Leto II', last_name='Atredies', address='Arrakis', picture='https://bookup-project.s3.us-east-2.amazonaws.com/letoII.jpg')
-    luke = User(
-        username='JediBoy77', email='luke@aa.io', password='password', first_name='Luke', last_name='Skywalker', address='Anchorhead, Tatooine', picture='https://bookup-project.s3.us-east-2.amazonaws.com/Luke.jpg')
-    han = User(
-        username='ScruffyNerf80', email='han@aa.io', password='password', first_name='Han', last_name='Solo', address='Corellia', picture='https://bookup-project.s3.us-east-2.amazonaws.com/han.jpg')
-    leia = User(
-        username='PrincessCinnabon83', email='leia@aa.io', password='password', first_name='Leia', last_name='Organa', address='Alderaan', picture='https://bookup-project.s3.us-east-2.amazonaws.com/leia.jpg')
-    padme = User(
-        username='QueenArmadillo99', email='padme@aa.io', password='password', first_name='Padme', last_name='Amidala', address='Naboo', picture='https://bookup-project.s3.us-east-2.amazonaws.com/amadala.jpg')
-    sheev = User(
-        username='IamtheSenate05', email='sheev@aa.io', password='password', first_name='Sheev', last_name='Palpatine', address='Naboo', picture='https://bookup-project.s3.us-east-2.amazonaws.com/sheev.png')
-    yoda = User(
-        username='FriendofWookies02', email='yoda@aa.io', password='password', first_name='Yoda', last_name='Green', address='Coruscant', picture='https://bookup-project.s3.us-east-2.amazonaws.com/yoda.jpg')
-    anakin = User(
-        username='DarthVader01', email='anakin@aa.io', password='password', first_name='Anakin', last_name='Skywalker', address='Mos Espa, Tatooine', picture='https://bookup-project.s3.us-east-2.amazonaws.com/anakin.jpg')
+    # Load sample DNA files
+    sample_dna1 = load_snp_file('app/seeds/sample_files/sample_dna1.txt')
+    sample_dna2 = load_snp_file('app/seeds/sample_files/sample_dna2.txt')
+    sample_dna3 = load_snp_file('app/seeds/sample_files/sample_dna3.txt')
+    sample_dna4 = load_snp_file('app/seeds/sample_files/sample_dna4.txt')
+    sample_dna5 = load_snp_file('app/seeds/sample_files/sample_dna5.txt')
+    sample_dna6 = load_snp_file('app/seeds/sample_files/sample_dna6.txt')
 
-    db.session.add(demo)
-    db.session.add(marnie)
-    db.session.add(bobbie)
-    db.session.add(paul)
-    db.session.add(leto)
-    db.session.add(luke)
-    db.session.add(han)
-    db.session.add(leia)
-    db.session.add(padme)
-    db.session.add(sheev)
-    db.session.add(yoda)
-    db.session.add(anakin)
-    db.session.commit()
+    # Create users
+    user1 = User(
+        username='demo_user',
+        email='demo@genemate.com',
+        address='123 Genome St.',
+        first_name='Demo',
+        last_name='User',
+        picture=None,
+        hashed_password=generate_password_hash('password'),
+        created_at=datetime.utcnow(),
+        updated_at=datetime.utcnow()
+    )
 
+    user2 = User(
+        username='jane_doe',
+        email='jane@example.com',
+        address='456 Chromosome Ave.',
+        first_name='Jane',
+        last_name='Doe',
+        picture=None,
+        hashed_password=generate_password_hash('password123'),
+        created_at=datetime.utcnow(),
+        updated_at=datetime.utcnow()
+    )
 
-    # add friends via model method
+    user3 = User(
+        username='john_smith',
+        email='john@example.com',
+        address='789 Helix Blvd.',
+        first_name='John',
+        last_name='Smith',
+        picture=None,
+        hashed_password=generate_password_hash('securepassword'),
+        created_at=datetime.utcnow(),
+        updated_at=datetime.utcnow()
+    )
 
-    demo.add_friend(marnie)
-    demo.add_friend(bobbie)
-    demo.add_friend(luke)
-    demo.add_friend(han)
-    demo.add_friend(leia)
-    demo.add_friend(padme)
-    demo.add_friend(sheev)
+    user4 = User(
+        username='amy_watson',
+        email='amy@example.com',
+        address='101 Mutation Ln.',
+        first_name='Amy',
+        last_name='Watson',
+        picture=None,
+        hashed_password=generate_password_hash('mypassword'),
+        created_at=datetime.utcnow(),
+        updated_at=datetime.utcnow()
+    )
 
-    marnie.add_friend(paul)
-    marnie.add_friend(leto)
-    marnie.add_friend(demo)
+    user5 = User(
+        username='luke_brown',
+        email='luke@example.com',
+        address='202 DNA Dr.',
+        first_name='Luke',
+        last_name='Brown',
+        picture=None,
+        hashed_password=generate_password_hash('password321'),
+        created_at=datetime.utcnow(),
+        updated_at=datetime.utcnow()
+    )
 
-    bobbie.add_friend(demo)
-    bobbie.add_friend(luke)
+    user6 = User(
+        username='sara_green',
+        email='sara@example.com',
+        address='303 Genome Way.',
+        first_name='Sara',
+        last_name='Green',
+        picture=None,
+        hashed_password=generate_password_hash('password987'),
+        created_at=datetime.utcnow(),
+        updated_at=datetime.utcnow()
+    )
 
-    luke.add_friend(demo)
-    luke.add_friend(bobbie)
-    luke.add_friend(padme)
-    luke.add_friend(leia)
-    luke.add_friend(yoda)
+    # Add users to session
+    db.session.add_all([user1, user2, user3, user4, user5, user6])
+    db.session.flush()  # flush to assign IDs
 
-    han.add_friend(demo)
-    han.add_friend(leia)
+    # Now create GeneticData for each user
+    user1_dna = GeneticData(
+        user_id=user1.id,
+        filename='sample_dna1.txt',
+        snp_file=sample_dna1
+    )
+    user2_dna = GeneticData(
+        user_id=user2.id,
+        filename='sample_dna2.txt',
+        snp_file=sample_dna2
+    )
+    user3_dna = GeneticData(
+        user_id=user3.id,
+        filename='sample_dna3.txt',
+        snp_file=sample_dna3
+    )
+    user4_dna = GeneticData(
+        user_id=user4.id,
+        filename='sample_dna4.txt',
+        snp_file=sample_dna4
+    )
+    user5_dna = GeneticData(
+        user_id=user5.id,
+        filename='sample_dna5.txt',
+        snp_file=sample_dna5
+    )
+    user6_dna = GeneticData(
+        user_id=user6.id,
+        filename='sample_dna6.txt',
+        snp_file=sample_dna6
+    )
 
-    leia.add_friend(demo)
-    leia.add_friend(han)
-    leia.add_friend(padme)
-    leia.add_friend(luke)
-
-    padme.add_friend(demo)
-    padme.add_friend(sheev)
-    padme.add_friend(leia)
-    padme.add_friend(luke)
-
-    yoda.add_friend(demo)
-    yoda.add_friend(luke)
-
-    anakin.add_friend(demo)
-
-
-
-# Uses a raw SQL query to TRUNCATE or DELETE the users table. SQLAlchemy doesn't
-# have a built in function to do this. With postgres in production TRUNCATE
-# removes all the data from the table, and RESET IDENTITY resets the auto
-# incrementing primary key, CASCADE deletes any dependent entities.  With
-# sqlite3 in development you need to instead use DELETE to remove all data and
-# it will reset the primary keys for you as well.
-def undo_users():
-    if environment == "production":
-        db.session.execute(f"TRUNCATE table {SCHEMA}.users RESTART IDENTITY CASCADE;")
-        db.session.execute(f"TRUNCATE table {SCHEMA}.friends RESTART IDENTITY CASCADE;")
-    else:
-        db.session.execute(text("DELETE FROM users"))
-        db.session.execute(text("DELETE FROM friends"))
-
+    db.session.add_all([user1_dna, user2_dna, user3_dna, user4_dna, user5_dna, user6_dna])
     db.session.commit()

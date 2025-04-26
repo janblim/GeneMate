@@ -6,4 +6,5 @@ from .post import Post
 from .favBook import FavBook
 from .comment import Comment
 from .book import Book
+from .geneticData import GeneticData
 from .db import environment, SCHEMA
