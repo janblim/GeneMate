@@ -18,9 +18,10 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(40), nullable=False, unique=True)
     email = db.Column(db.String(255), nullable=False, unique=True)
     hashed_password = db.Column(db.String(255), nullable=False)
+    genetic_data = db.relationship('GeneticData', uselist=False, back_populates='user', cascade='all, delete-orphan')
     picture = db.Column(db.String(255))
     created_at = db.Column(db.DateTime(timezone=True), default=datetime.now(), nullable=False)
-    updated_at = db.Column(db.DateTime(timezone=True), default=datetime.now(), nullable=False)
+    updated_at = db.Column(db.DateTime(timezone=True), default=datetime.now(), onupdate=datetime.now(), nullable=False)
 
     friends = db.relationship(
         'User', secondary=friends,
@@ -29,10 +30,6 @@ class User(db.Model, UserMixin):
         backref=db.backref('friends_backref', lazy='dynamic'),
         lazy='dynamic'
     )
-    ups = db.relationship('Up', backref='user', lazy=True)
-    favBooks = db.relationship('FavBook', backref='user', lazy=True)
-    comments = db.relationship('Comment', backref='user', lazy=True)
-    posts = db.relationship('Post', backref='user', lazy=True)
 
     @property
     def password(self):
@@ -54,10 +51,8 @@ class User(db.Model, UserMixin):
             'username': self.username,
             'email': self.email,
             'picture': self.picture,
+            'genetic_data': self.genetic_data.to_dict() if self.genetic_data else None,
             'friends': [{'friend_id': friend.id} for friend in self.friends],
-            'favBooks': [{'book_id': book.book_id} for book in self.favBooks],
-            'comments': [{'id': comment.id, 'score': comment.score} for comment in self.comments],
-            'posts': [{'id': post.id, 'score': post.score} for post in self.posts],
             'created_at': self.created_at,
             'updated_at': self.updated_at
         }

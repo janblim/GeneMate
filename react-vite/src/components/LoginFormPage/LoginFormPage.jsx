@@ -1,66 +1,88 @@
-import { useState } from "react";
-import { thunkLogin } from "../../redux/session";
-import { useDispatch, useSelector } from "react-redux";
-import { Navigate, useNavigate } from "react-router-dom";
-import "./LoginForm.css";
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-function LoginFormPage() {
+export default function LoginFormPage() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const sessionUser = useSelector((state) => state.session.user);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [errors, setErrors] = useState({});
 
-  if (sessionUser) return <Navigate to="/" replace={true} />;
-
-  const handleSubmit = async (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
 
-    const serverResponse = await dispatch(
-      thunkLogin({
-        email,
-        password,
-      })
-    );
+    const res = await fetch('/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password }),
+    });
 
-    if (serverResponse) {
-      setErrors(serverResponse);
+    if (res.ok) {
+      const data = await res.json();
+      console.log('Logged in:', data);
+      navigate('/profile'); // Or wherever you want to go after login
     } else {
-      navigate("/");
+      console.error('Login failed');
+    }
+  };
+
+  const handleDemoLogin = async () => {
+    const res = await fetch('/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email: 'demo@genemate.com',
+        password: 'password', // Your demo password
+      }),
+    });
+
+    if (res.ok) {
+      const data = await res.json();
+      console.log('Demo login successful:', data);
+      navigate('/profile');
+    } else {
+      console.error('Demo login failed');
     }
   };
 
   return (
-    <>
-      <h1>Log In</h1>
-      {errors.length > 0 &&
-        errors.map((message) => <p key={message}>{message}</p>)}
-      <form onSubmit={handleSubmit}>
-        <label>
-          Email
-          <input
-            type="text"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </label>
-        {errors.email && <p>{errors.email}</p>}
-        <label>
-          Password
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </label>
-        {errors.password && <p>{errors.password}</p>}
-        <button type="submit">Log In</button>
+    <div className="min-h-screen bg-bg-base flex items-center justify-center px-6">
+      <form onSubmit={handleLogin} className="bg-white p-6 rounded-2xl shadow-soft w-full max-w-md">
+        <h2 className="text-2xl font-bold text-center text-primary mb-6">Welcome Back</h2>
+
+        <label className="block mb-2 text-gray-800 font-medium">Email</label>
+        <input
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+          placeholder="Enter your email"
+          className="w-full p-2 border rounded mb-4 text-gray-800 placeholder-gray-400"
+        />
+
+        <label className="block mb-2 text-gray-800 font-medium">Password</label>
+        <input
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+          placeholder="Enter your password"
+          className="w-full p-2 border rounded mb-6 text-gray-800 placeholder-gray-400"
+        />
+
+        <button
+          type="submit"
+          className="w-full bg-primary text-white py-2 rounded-2xl hover:bg-primary/90 mb-3 transition"
+        >
+          Log In
+        </button>
+
+        <button
+          type="button"
+          onClick={handleDemoLogin}
+          className="w-full bg-secondary text-text-primary py-2 rounded-2xl hover:bg-secondary/90 border transition"
+        >
+          Demo User
+        </button>
       </form>
-    </>
+    </div>
   );
 }
-
-export default LoginFormPage;

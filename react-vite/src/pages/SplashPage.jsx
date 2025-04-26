@@ -1,16 +1,22 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { PiDnaBold } from "react-icons/pi"; // DNA icon from react-icons
 
 export default function SplashPage() {
   return (
     <div className="min-h-screen bg-bg-base text-text-primary flex flex-col items-center justify-center px-6">
-      {/* Logo */}
-      <h1 className="text-5xl font-romantic text-accent mb-4">GeneMate</h1>
+      {/* Logo with DNA icon */}
+      <div className="flex items-center gap-3 mb-2">
+        <PiDnaBold className="text-4xl text-accent" />
+        <h1 className="text-5xl font-romantic text-accent">GeneMate</h1>
+      </div>
 
-      {/* Tagline */}
-      <p className="text-lg text-text-secondary mb-8 text-center max-w-xl">
-        Where science meets the heart. Upload your DNA and find love through genetic compatibility.
-      </p>
+      {/* Tagline split into two lines */}
+      <div className="text-xl text-text-secondary mb-8 text-center max-w-xl leading-relaxed">
+        Discover compatibility written in your DNA.
+        <br />
+        <span className="italic">Where science meets the heart.</span>
+      </div>
 
       {/* Call to Action */}
       <Link to="/signup">
@@ -19,7 +25,7 @@ export default function SplashPage() {
         </button>
       </Link>
 
-      {/* Decorative section */}
+      {/* Login link */}
       <div className="mt-12 text-center text-sm text-text-secondary">
         <p>Already have an account?</p>
         <Link to="/login" className="text-accent hover:underline">
@@ -27,9 +33,9 @@ export default function SplashPage() {
         </Link>
       </div>
 
-      {/* Optional animated DNA line (placeholder) */}
+      {/* Subtle slogan */}
       <div className="mt-16 opacity-20 text-sm italic">
-        “Love, decoded.”
+        GeneMate™ 2025. All rights reserved.
       </div>
     </div>
   );

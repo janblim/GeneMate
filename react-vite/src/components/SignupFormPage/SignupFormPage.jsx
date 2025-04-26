@@ -1,94 +1,59 @@
-import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Navigate, useNavigate } from "react-router-dom";
-import { thunkSignup } from "../../redux/session";
+import React, { useState } from 'react';
 
-function SignupFormPage() {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const sessionUser = useSelector((state) => state.session.user);
-  const [email, setEmail] = useState("");
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [errors, setErrors] = useState({});
-
-  if (sessionUser) return <Navigate to="/" replace={true} />;
+export default function SignupFormPage() {
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [file, setFile] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (password !== confirmPassword) {
-      return setErrors({
-        confirmPassword:
-          "Confirm Password field must be the same as the Password field",
-      });
-    }
+    const formData = new FormData();
+    formData.append('username', username);
+    formData.append('email', email);
+    formData.append('password', password);
+    formData.append('file', file);
 
-    const serverResponse = await dispatch(
-      thunkSignup({
-        email,
-        username,
-        password,
-      })
-    );
+    const res = await fetch('/api/auth/signup', {
+      method: 'POST',
+      body: formData,
+    });
 
-    if (serverResponse) {
-      setErrors(serverResponse);
+    if (res.ok) {
+      const data = await res.json();
+      console.log('Signed up successfully:', data);
+      // Redirect to dashboard or profile page
     } else {
-      navigate("/");
+      console.error('Signup failed');
     }
   };
 
   return (
-    <>
-      <h1>Sign Up</h1>
-      {errors.server && <p>{errors.server}</p>}
-      <form onSubmit={handleSubmit}>
-        <label>
-          Email
-          <input
-            type="text"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </label>
-        {errors.email && <p>{errors.email}</p>}
-        <label>
-          Username
-          <input
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-          />
-        </label>
-        {errors.username && <p>{errors.username}</p>}
-        <label>
-          Password
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </label>
-        {errors.password && <p>{errors.password}</p>}
-        <label>
-          Confirm Password
-          <input
-            type="password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            required
-          />
-        </label>
-        {errors.confirmPassword && <p>{errors.confirmPassword}</p>}
-        <button type="submit">Sign Up</button>
+    <div className="min-h-screen bg-bg-base flex items-center justify-center px-6">
+      <form onSubmit={handleSubmit} className="bg-white p-6 rounded-2xl shadow-soft w-full max-w-md">
+        <h2 className="text-2xl font-bold text-center text-primary mb-6">Create Account</h2>
+
+        <label className="block mb-2 text-text-primary">Username</label>
+        <input type="text" value={username} onChange={e => setUsername(e.target.value)} required
+          className="w-full p-2 border rounded mb-4 text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary" />
+
+        <label className="block mb-2 text-text-primary">Email</label>
+        <input type="email" value={email} onChange={e => setEmail(e.target.value)} required
+          className="w-full p-2 border rounded mb-4 text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary" />
+
+        <label className="block mb-2 text-text-primary">Password</label>
+        <input type="password" value={password} onChange={e => setPassword(e.target.value)} required
+          className="w-full p-2 border rounded mb-4 text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary" />
+
+        <label className="block mb-2 text-text-primary">Upload DNA File (.txt)</label>
+        <input type="file" accept=".txt" onChange={e => setFile(e.target.files[0])}
+          className="w-full p-2 border rounded mb-6" required />
+
+        <button type="submit" className="w-full bg-primary text-white py-2 rounded-2xl hover:bg-primary/90">
+          Sign Up
+        </button>
       </form>
-    </>
+    </div>
   );
 }
-
-export default SignupFormPage;

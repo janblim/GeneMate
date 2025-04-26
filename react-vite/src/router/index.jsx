@@ -12,52 +12,56 @@ import ProfilePage from '../components/ProfilePage';
 import PostPage from '../components/PostPage';
 
 export const router = createBrowserRouter([
-  // Splash page — no Layout
+  // Splash — no sidebar
   {
-    path: "/",
+    path: '/',
     element: <SplashPage />,
   },
+  {
+    path: '/signup',
+    element: <SignupFormPage />,
+  },
+  {
+    path: '/login',
+    element: <LoginFormPage />,
+  },
 
-  // All other pages — wrapped in Layout (with sidebar)
+  // All other pages — inside layout (with sidebar)
   {
     element: <Layout />,
     children: [
       {
-        path: "login",
+        path: 'login',
         element: <LoginFormPage />,
       },
       {
-        path: "signup",
-        element: <SignupFormPage />,
+        path: 'books/:book_id',
+        element: <BookPage />,
       },
       {
-        path: "books/:book_id",
-        element: <BookPage />
+        path: 'sorted/:sorted_by',
+        element: <SortedPage />,
       },
       {
-        path: "sorted/:sorted_by",
-        element: <SortedPage />
+        path: 'books/favorites',
+        element: <FavoritePage />,
       },
       {
-        path: "books/favorites",
-        element: <FavoritePage />
-      },
-      {
-        path: "friends",
-        element: <FriendPage />
+        path: 'friends',
+        element: <FriendPage />,
       },
       {
         path: 'about',
-        element: <AboutPage />
+        element: <AboutPage />,
       },
       {
         path: 'profile/:user_id',
-        element: <ProfilePage/>
+        element: <ProfilePage />,
       },
       {
         path: 'post/:post_id',
-        element: <PostPage />
-      }
+        element: <PostPage />,
+      },
     ],
   },
 ]);
